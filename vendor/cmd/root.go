@@ -47,7 +47,7 @@ func Execute() {
 	if _, present := os.LookupEnv("DEBUG"); present == false {
 		defer func() {
 			if err := recover(); err != nil {
-				logger.Fatalln("panic:", err)
+				logger.Fatalln("[execute]", err)
 			}
 			return
 		}()
