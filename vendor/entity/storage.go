@@ -13,6 +13,7 @@ type storage struct {
 }
 
 func (s *storage) load(ptr interface{}) {
+	logger.Printf("[storage] try loading storage file '%s'\n", s.path)
 	file, err := os.Open(s.path)
 	defer file.Close()
 	if os.IsNotExist(err) {
@@ -32,6 +33,7 @@ func (s *storage) load(ptr interface{}) {
 }
 
 func (s *storage) dump(ptr interface{}) {
+	logger.Printf("[storage] try dumping to storage file '%s'...\n", s.path)
 	file, err := os.OpenFile(s.path, os.O_RDWR|os.O_CREATE, 0666)
 	defer file.Close()
 	if err != nil {

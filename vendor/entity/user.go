@@ -28,14 +28,17 @@ func init() {
 
 // Init initialize a user model
 func (model *userModel) Init(path string) {
+	logger.Println("[usermodel] initializing")
 	model.path = path
 	model.users = make(map[string]*User)
 
 	model.load()
+	logger.Println("[usermodel] initialized")
 }
 
 // AddUser add a new user to database
 func (model *userModel) AddUser(user *User) {
+	logger.Println("[usermodel] try adding new user", user.Username)
 	model.users[user.Username] = user
 	model.dump()
 	logger.Println("[usermodel] added new user", user.Username)
