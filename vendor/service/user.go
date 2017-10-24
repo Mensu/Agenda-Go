@@ -6,12 +6,17 @@ import (
 	"utils"
 )
 
-func validateNewUser(user *entity.User) error {
+type user = entity.User
+
+func validateNewUser(user *user) error {
 	if len(user.Username) == 0 {
 		return fmt.Errorf("username should not be empty")
 	}
 	if entity.UserModel.FindByUsername(user.Username) != nil {
 		return fmt.Errorf("username '%s' already exists", user.Username)
+	}
+	if len(user.Password) == 0 {
+		return fmt.Errorf("password should not be empty")
 	}
 	// ...TODO
 	return nil
@@ -19,7 +24,7 @@ func validateNewUser(user *entity.User) error {
 
 // Register registers a user
 func Register(username string, password string, email string, phone string) (err error) {
-	newUser := &entity.User{
+	newUser := &user{
 		Username: username,
 		Password: password,
 		Email:    email,
@@ -32,4 +37,9 @@ func Register(username string, password string, email string, phone string) (err
 	newUser.Password = utils.MD5(newUser.Password)
 	entity.UserModel.AddUser(newUser)
 	return
+}
+
+// IsPwdMatch checks whether provided password matches that of the user
+func IsPwdMatch(user *user, password string) bool {
+	return utils.MD5(password) == user.Password
 }

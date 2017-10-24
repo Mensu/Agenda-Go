@@ -26,7 +26,7 @@ func (s *storage) load(ptr interface{}) {
 
 	decodeErr := json.NewDecoder(file).Decode(ptr)
 	if decodeErr != nil {
-		fmt.Fprintf(os.Stderr, "Failed to decode storage file '%s'. You might want to remove it.", s.path)
+		fmt.Fprintf(os.Stderr, "Failed to decode storage file '%s'. You might want to remove it.\n", s.path)
 		panic(errors.Wrap(fmt.Errorf("[storage] failed to decode storage file '%s': %v", s.path, decodeErr), 0))
 	}
 	logger.Printf("[storage] storage file '%s' decoded successfully\n", s.path)
@@ -34,7 +34,7 @@ func (s *storage) load(ptr interface{}) {
 
 func (s *storage) dump(ptr interface{}) {
 	logger.Printf("[storage] try dumping to storage file '%s'...\n", s.path)
-	file, err := os.OpenFile(s.path, os.O_RDWR|os.O_CREATE, 0666)
+	file, err := os.OpenFile(s.path, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666)
 	defer file.Close()
 	if err != nil {
 		panic(errors.Wrap(err, 0))

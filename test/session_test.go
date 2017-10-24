@@ -1,0 +1,42 @@
+package entity_test
+
+import (
+	"service"
+	"testing"
+
+	"entity"
+)
+
+func init() {
+	entity.CurSessionModel.Init("/tmp/test_curUser.json")
+}
+
+func TestSessionModel(t *testing.T) {
+	model := entity.CurSessionModel
+	if len(model.GetCurUser()) != 0 {
+		t.Error(`Expect no current user at the beginning`)
+	}
+	model.SetCurUser(&entity.User{
+		Username: "test",
+	})
+	if model.GetCurUser() != "test" {
+		t.Errorf(`Expect current user to be '%s'`, "test")
+	}
+	model.SetCurUser(&entity.User{})
+}
+
+func TestSessionService(t *testing.T) {
+	err := service.Register("sessionUsername", "testPassword", "email@email.com", "12345678912")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := service.Login("sessionUsername", "wrongpassword"); err != service.ErrInvalidCredentials {
+		t.Fatal(err)
+	}
+	if err := service.Login("sessionUsername", "testPassword"); err != nil {
+		t.Fatal(err)
+	}
+	if err := service.Logout(); err != nil {
+		t.Fatal(err)
+	}
+}

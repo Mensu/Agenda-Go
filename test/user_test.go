@@ -4,11 +4,15 @@ import (
 	"testing"
 
 	"entity"
+	"service"
 )
+
+func init() {
+	entity.UserModel.Init("/tmp/test_user_data.json")
+}
 
 func TestUserModel(t *testing.T) {
 	model := entity.UserModel
-	model.Init("/tmp/user_data.json")
 	newUser := entity.User{
 		Username: "test",
 		Password: "test",
@@ -21,7 +25,20 @@ func TestUserModel(t *testing.T) {
 	})
 	for index, user := range foundUsers {
 		if user.Username != "test" {
-			t.Errorf(`Expect User %d to have username "%s", but got "%s"`, index, "test", user.Username)
+			t.Errorf("Expect user %d to have username '%s', but got '%s'", index, "test", user.Username)
 		}
+	}
+}
+
+func TestUserService(t *testing.T) {
+	model := entity.UserModel
+	var err error
+	err = service.Register("testUsername", "testPassword", "email@email.com", "12345678912")
+	if err != nil {
+		t.Fatal(err)
+	}
+	newUser := model.FindByUsername("testUsername")
+	if newUser == nil {
+		t.Fatalf(`Expect user '%s' could be found`, "testUsername")
 	}
 }
