@@ -2,23 +2,18 @@ package service
 
 import (
 	"entity"
-	"errors"
-)
-
-var (
-	// ErrUsernameIsEmpty is the error for empty username
-	ErrUsernameIsEmpty = errors.New("username should not be empty")
-	// ErrUsernameExists is the error for username already existing
-	ErrUsernameExists = errors.New("username already exists")
+	"fmt"
+	"utils"
 )
 
 func validateNewUser(user *entity.User) error {
 	if len(user.Username) == 0 {
-		return ErrUsernameIsEmpty
+		return fmt.Errorf("username should not be empty")
 	}
 	if entity.UserModel.FindByUsername(user.Username) != nil {
-		return ErrUsernameExists
+		return fmt.Errorf("username '%s' already exists", user.Username)
 	}
+	// ...TODO
 	return nil
 }
 
@@ -34,6 +29,7 @@ func Register(username string, password string, email string, phone string) (err
 	if err != nil {
 		return
 	}
+	newUser.Password = utils.MD5(newUser.Password)
 	entity.UserModel.AddUser(newUser)
 	return
 }
