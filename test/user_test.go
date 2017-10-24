@@ -8,7 +8,7 @@ import (
 
 func TestUserModel(t *testing.T) {
 	model := entity.UserModel
-	model.Init("/tmp/user_data")
+	model.Init("/tmp/user_data.json")
 	newUser := entity.User{
 		Username: "test",
 		Password: "test",
