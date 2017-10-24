@@ -56,6 +56,6 @@ func Init() {
 		<-finished
 	}
 	if err != nil {
-		logger.Fatalln(err)
+		logger.Fatalln("[init model]", err)
 	}
 }

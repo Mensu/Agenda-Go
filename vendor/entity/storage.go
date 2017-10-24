@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-
-	errors "github.com/go-errors/errors"
+	"utils"
 )
 
 type storage struct {
@@ -21,13 +20,12 @@ func (s *storage) load(ptr interface{}) {
 		return
 	}
 	if err != nil {
-		panic(errors.Wrap(err, 0))
+		utils.Panic(err)
 	}
 
-	decodeErr := json.NewDecoder(file).Decode(ptr)
-	if decodeErr != nil {
+	if err := json.NewDecoder(file).Decode(ptr); err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to decode storage file '%s'. You might want to remove it.\n", s.path)
-		panic(errors.Wrap(fmt.Errorf("[storage] failed to decode storage file '%s': %v", s.path, decodeErr), 0))
+		utils.Panicf("[storage] failed to decode storage file '%s': %v", s.path, err)
 	}
 	logger.Printf("[storage] storage file '%s' decoded successfully\n", s.path)
 }
@@ -37,12 +35,11 @@ func (s *storage) dump(ptr interface{}) {
 	file, err := os.OpenFile(s.path, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666)
 	defer file.Close()
 	if err != nil {
-		panic(errors.Wrap(err, 0))
+		utils.Panic(err)
 	}
 
-	encodeErr := json.NewEncoder(file).Encode(ptr)
-	if encodeErr != nil {
-		panic(errors.Wrap(encodeErr, 0))
+	if err := json.NewEncoder(file).Encode(ptr); err != nil {
+		utils.Panic(err)
 	}
 	logger.Printf("[storage] storage file '%s' written successfully\n", s.path)
 }
