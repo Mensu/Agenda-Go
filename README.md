@@ -20,6 +20,6 @@ cwd: .
 # log 的路径。如果环境变量设定了 DEBUG，则 log 会输出到 stderr
 log: /dev/null
 # 用户数据的路径。JSON 格式
-user_data: data/user_data
+user_data: data/user_data.json
 
 ```
