@@ -20,6 +20,7 @@ import (
 	"os"
 	"utils"
 
+	errors "github.com/go-errors/errors"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -79,7 +80,7 @@ func initConfig() {
 		// Find home directory.
 		home, err := homedir.Dir()
 		if err != nil {
-			logger.Fatalln("Failed to find home directory", err)
+			logger.Fatalln("Failed to find home directory", errors.Wrap(err, 0))
 		}
 
 		// Search config in home directory with name ".agenda-go" (without extension).
@@ -92,12 +93,12 @@ func initConfig() {
 	// If a config file is found, read it in.
 	err := viper.ReadInConfig()
 
-	// set workdir
-	workdir := viper.GetString("workdir")
-	if len(workdir) > 0 {
-		err := os.Chdir(workdir)
+	// set current working directory
+	cwd := viper.GetString("cwd")
+	if len(cwd) > 0 {
+		err := os.Chdir(cwd)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Failed to change working directory: %v", err)
+			fmt.Fprintf(os.Stderr, "Failed to change current working directory: %v", err)
 		}
 	}
 

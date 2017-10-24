@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+
+	errors "github.com/go-errors/errors"
 )
 
 type storage struct {
@@ -18,13 +20,13 @@ func (s *storage) load(ptr interface{}) {
 		return
 	}
 	if err != nil {
-		panic(err)
+		panic(errors.Wrap(err, 0))
 	}
 
 	decodeErr := json.NewDecoder(file).Decode(ptr)
 	if decodeErr != nil {
 		fmt.Fprintf(os.Stderr, "Failed to decode storage file '%s'. You might want to remove it.", s.path)
-		panic(fmt.Errorf("[storage] failed to decode storage file '%s': %v", s.path, decodeErr))
+		panic(errors.Wrap(fmt.Errorf("[storage] failed to decode storage file '%s': %v", s.path, decodeErr), 0))
 	}
 	logger.Printf("[storage] storage file '%s' decoded successfully\n", s.path)
 }
@@ -33,12 +35,12 @@ func (s *storage) dump(ptr interface{}) {
 	file, err := os.OpenFile(s.path, os.O_RDWR|os.O_CREATE, 0666)
 	defer file.Close()
 	if err != nil {
-		panic(err)
+		panic(errors.Wrap(err, 0))
 	}
 
 	encodeErr := json.NewEncoder(file).Encode(ptr)
 	if encodeErr != nil {
-		panic(encodeErr)
+		panic(errors.Wrap(encodeErr, 0))
 	}
 	logger.Printf("[storage] storage file '%s' written successfully\n", s.path)
 }
