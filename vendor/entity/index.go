@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"os"
 	"utils"
 
 	"github.com/spf13/viper"
@@ -8,6 +9,8 @@ import (
 
 type model interface {
 	Init(string)
+	load()
+	dump()
 }
 
 type modelConfig struct {
@@ -30,16 +33,19 @@ func addModel(model model, filename string) {
 // Init initializes registered models
 func Init() {
 	finished := make(chan bool)
+	// initialize all models concurrently
 	for _, m := range models {
 		go func(m modelConfig) {
 			path := viper.GetString(m.filename)
 			if len(path) == 0 {
-				path = m.filename
+				os.Mkdir("data", 0755)
+				path = "data/" + m.filename
 			}
 			m.model.Init(path)
 			finished <- true
 		}(m)
 	}
+	// wait for all models to finish initialization
 	for _ = range models {
 		<-finished
 	}

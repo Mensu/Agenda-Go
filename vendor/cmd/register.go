@@ -11,7 +11,7 @@ import (
 var registerCmd = &cobra.Command{
 	Use:   "register",
 	Short: "register an account",
-	Long:  `Register an Agenda account with username, password and email`,
+	Long:  `Register an Agenda account with username, password, email and phone`,
 	Run: func(cmd *cobra.Command, args []string) {
 		username, _ := cmd.Flags().GetString("username")
 		password, _ := cmd.Flags().GetString("password")
@@ -19,9 +19,9 @@ var registerCmd = &cobra.Command{
 		phone, _ := cmd.Flags().GetString("phone")
 		err := service.Register(username, password, email, phone)
 		if err == nil {
-			fmt.Println("created user", username)
+			fmt.Println("Registered user:", username)
 		} else {
-			fmt.Fprintln(os.Stderr, err)
+			fmt.Fprintln(os.Stderr, "Error:", err)
 		}
 	},
 }

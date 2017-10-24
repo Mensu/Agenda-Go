@@ -16,7 +16,6 @@ package cmd
 
 import (
 	"entity"
-	"fmt"
 	"os"
 	"utils"
 
@@ -98,7 +97,7 @@ func initConfig() {
 	if len(cwd) > 0 {
 		err := os.Chdir(cwd)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "Failed to change current working directory: %v", err)
+			logger.Fatalf("Failed to change current working directory: %v", err)
 		}
 	}
 
