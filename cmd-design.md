@@ -20,4 +20,4 @@ agenda register [flags]
 
 ### 实例
 
-agenda register register -u test -p testpass -m test@test.com -n 12345678909
+agenda register -u test -p testpass -m test@test.com -n 12345678909

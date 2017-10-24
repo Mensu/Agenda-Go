@@ -39,7 +39,7 @@ func Init() {
 			path := viper.GetString(m.filename)
 			if len(path) == 0 {
 				os.Mkdir("data", 0755)
-				path = "data/" + m.filename
+				path = "data/" + m.filename + ".json"
 			}
 			m.model.Init(path)
 			finished <- true
