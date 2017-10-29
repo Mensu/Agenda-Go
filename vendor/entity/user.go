@@ -44,6 +44,13 @@ func (model *userModel) AddUser(user *User) {
 	logger.Println("[usermodel] added new user", user.Username)
 }
 
+func (model *userModel) DeleteUser(user *User) {
+	logger.Println("[usermodel] try deleting a user", user.Username)
+	delete(model.users, user.Username)
+	model.dump()
+	logger.Println("[usermodel] deleted a user", user.Username)
+}
+
 // FindUserCondition filter function to query user
 type FindUserCondition func(*User) bool
 

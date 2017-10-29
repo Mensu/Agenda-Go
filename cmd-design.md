@@ -51,3 +51,141 @@ agenda logout [flags]
 ### 实例
 
 agenda logout
+
+## agenda list
+
+查看已注册的所有用户的用户名、邮箱及电话信息
+
+### 语法
+
+agenda list [flags]
+
+- -h, --help              帮助
+
+### 实例
+
+agenda list
+
+## agenda cancel
+
+删除本用户账户
+
+### 语法
+
+agenda cancel [flags]
+
+- -h, --help              帮助
+
+### 实例
+
+agenda cancel
+
+## agenda add-meeting
+
+添加会议
+
+### 语法
+
+agenda add-meeting [flags]
+
+- -t, --title string          会议主题
+- -p, --participator string   参加者（用多个-p 添加多个参加者）
+- -s, --startTime string      开始时间（格式XXXX-XXX-XX/XX:XX:XX, 24小时制）
+- -e, --endTime string        结束时间（格式XXXX-XXX-XX/XX:XX:XX, 24小时制）
+- -h, --help                  帮助
+
+### 实例
+
+agenda add-meeting -t Shadowsocks -p clowwindy -s 2017-01-01/12:00:00 -e 2017-01-01/13:00:00
+
+## agenda add-participator
+
+添加会议参与者
+
+### 语法
+
+agenda add-participator [flags]
+
+- -t, --title string          会议主题
+- -p, --participator string   参加者（用多个-p 添加多个参加者）
+- -h, --help                  帮助
+
+### 实例
+
+agenda add-participator -t Shadowsocks -p clowwindy
+
+## agenda delete-participator
+
+删除会议参与者
+
+### 语法
+
+agenda delete-participator [flags]
+
+- -t, --title string          会议主题
+- -p, --participator string   参加者（用多个-p 添加多个参加者）
+- -h, --help                  帮助
+
+### 实例
+
+agenda delete-participator -t Shadowsocks -p clowwindy
+
+## agenda show
+
+查询会议
+
+### 语法
+
+agenda show [flags]
+
+- -s, --startTime string      开始时间（格式XXXX-XXX-XX/XX:XX:XX, 24小时制）
+- -e, --endTime string        结束时间（格式XXXX-XXX-XX/XX:XX:XX, 24小时制）
+- -h, --help                  帮助
+
+### 实例
+
+agenda -s 2017-01-01/12:00:00 -e 2017-01-01/13:00:00
+
+## agenda cancel-meeting
+
+取消会议
+
+### 语法
+
+agenda cancel-meeting [flags]
+
+- -t, --title string          会议主题
+- -h, --help                  帮助
+
+### 实例
+
+agenda cancel-meeting -t Shadowsocks
+
+### agenda quit-meeting
+
+退出会议
+
+### 语法
+
+agenda quit-meeting [flags]
+
+- -t, --title string          会议主题
+- -h, --help                  帮助
+
+### 实例
+
+agenda quit-meeting -t Shadowsocks
+
+## agenda clear
+
+清空自己发起的所有会议安排
+
+### 语法
+
+agenda clear [flags]
+
+- -h, --help                  帮助
+
+### 实例
+
+agenda clear
