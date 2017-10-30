@@ -74,17 +74,17 @@ func TestMeetingService(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	err = service.AddMeeting("shadowsocks", []string{"test2", "test3"}, "2017-01-01/12:00:00", "2017-01-01/12:00:00")
+	err = service.AddMeeting("shadowsocksTest", []string{"test2", "test3"}, "2017-01-01/12:00:00", "2017-01-01/12:00:00")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = service.DeleteParticipatorFromMeeting("shadowsocks", []string{"test2"})
+	err = service.DeleteParticipatorFromMeeting("shadowsocksTest", []string{"test2"})
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	err = service.AddParticipatorToMeeting("shadowsocks", []string{"test2"})
+	err = service.AddParticipatorToMeeting("shadowsocksTest", []string{"test2"})
 	if err != nil {
 		t.Fatal(err)
 	}

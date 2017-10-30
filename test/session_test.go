@@ -45,4 +45,9 @@ func TestSessionService(t *testing.T) {
 	if err := service.Logout(); err != nil {
 		t.Fatal(err)
 	}
+
+	if err := service.Login("sessionUsername", "testPassword"); err != nil {
+		t.Fatal(err)
+	}
+	err = service.DeleteUser()
 }
