@@ -66,19 +66,19 @@ agenda list [flags]
 
 agenda list
 
-## agenda cancel
+## agenda delete-account
 
 删除本用户账户
 
 ### 语法
 
-agenda cancel [flags]
+agenda delete-account [flags]
 
 - -h, --help              帮助
 
 ### 实例
 
-agenda cancel
+agenda delete-account
 
 ## agenda add-meeting
 

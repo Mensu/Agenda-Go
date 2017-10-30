@@ -231,7 +231,10 @@ func AddParticipatorToMeeting(title string, participatorNames []string) error {
 			return err
 		}
 
-		curMeeting.Participators = append(curMeeting.Participators, participatorName)
+	}
+
+	for _, participatorName := range participatorNames {
+		entity.MeetingModel.AddParticipatorToMeeting(curMeeting, participatorName)
 	}
 
 	return nil

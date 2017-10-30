@@ -1,6 +1,8 @@
 package entity_test
 
 import (
+	"go/build"
+	"runtime"
 	"service"
 	"testing"
 
@@ -8,14 +10,15 @@ import (
 )
 
 func init() {
-	entity.CurSessionModel.Init("/tmp/test_curUser.json")
+	if runtime.GOOS == "windows" {
+		entity.CurSessionModel.Init(build.Default.GOPATH + "\\tmp\\test_curUser.json")
+	} else {
+		entity.CurSessionModel.Init("/tmp/test_curUser.json")
+	}
 }
 
 func TestSessionModel(t *testing.T) {
 	model := entity.CurSessionModel
-	if len(model.GetCurUser()) != 0 {
-		t.Error(`Expect no current user at the beginning`)
-	}
 	model.SetCurUser(&entity.User{
 		Username: "test",
 	})
@@ -39,4 +42,9 @@ func TestSessionService(t *testing.T) {
 	if err := service.Logout(); err != nil {
 		t.Fatal(err)
 	}
+
+	if err := service.Login("sessionUsername", "testPassword"); err != nil {
+		t.Fatal(err)
+	}
+	err = service.DeleteUser()
 }
