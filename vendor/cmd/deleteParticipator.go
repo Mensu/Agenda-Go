@@ -13,11 +13,11 @@ var deleteParticipatorCmd = &cobra.Command{
 	Short: "delete a participator from a meeting",
 	Long:  `delete a existed participator from a meeting`,
 	Run: func(cmd *cobra.Command, args []string) {
-		title := cmd.Flags().GetString("title")
+		title, _ := cmd.Flags().GetString("title")
 		participators, _ := cmd.Flags().GetStringArray("participator")
-		err := service.DeleteParticipatorToMeeting(title, participators)
+		err := service.DeleteParticipatorFromMeeting(title, participators)
 		if err == nil {
-			fmt.Println("Deleted participator from the meeting %s", title)
+			fmt.Printf("Deleted participator from the meeting %s\n", title)
 		} else {
 			fmt.Fprintln(os.Stderr, "Error:", err)
 		}
@@ -25,7 +25,7 @@ var deleteParticipatorCmd = &cobra.Command{
 }
 
 func init() {
-	RootCmd.addCommand(deleteParticipatorCmd)
+	RootCmd.AddCommand(deleteParticipatorCmd)
 	deleteParticipatorCmd.Flags().StringP("title", "t", "", "the title of the meeting")
-	deleteParticipatorCmd.Flags().StringArrayP("participator", "p", "", "the participator of the meeting")
+	deleteParticipatorCmd.Flags().StringArrayP("participator", "p", nil, "the participator of the meeting")
 }

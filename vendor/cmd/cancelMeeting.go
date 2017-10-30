@@ -13,10 +13,10 @@ var cancelMeetingCmd = &cobra.Command{
 	Short: "cancel a meeting",
 	Long:  `cancel a meeting by speecher`,
 	Run: func(cmd *cobra.Command, args []string) {
-		title := cmd.Flags().GetString("title")
+		title, _ := cmd.Flags().GetString("title")
 		err := service.DeleteFromMeeting(title)
 		if err == nil {
-			fmt.Println("Canceled the meeting %s", title)
+			fmt.Printf("Canceled the meeting %s\n", title)
 		} else {
 			fmt.Fprintln(os.Stderr, "Error:", err)
 		}

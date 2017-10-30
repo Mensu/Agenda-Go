@@ -17,7 +17,7 @@ func validateNewMeeting(meeting *meeting) error {
 	if entity.MeetingModel.FindByTitle(meeting.Title) != nil {
 		return fmt.Errorf("Title '%s' already exists", meeting.Title)
 	}
-	if meeting.Participators.size() == 0 {
+	if len(meeting.Participators) == 0 {
 		return fmt.Errorf("Meeting must have participator")
 	}
 	for _, participatorName := range meeting.Participators {
@@ -43,6 +43,9 @@ func validateNewMeeting(meeting *meeting) error {
 }
 
 func validateNewTimeInterval(startTime string, endTime string) error {
+	if len(startTime) == 0 {
+		return fmt.Errorf("Empty start time")
+	}
 	// Start Time format must be XXXX-XX-XX/XX:XX
 	_, err := time.Parse(timeFormat, startTime)
 
@@ -50,6 +53,9 @@ func validateNewTimeInterval(startTime string, endTime string) error {
 		return fmt.Errorf("Illegal StartTime format")
 	}
 
+	if len(endTime) == 0 {
+		return fmt.Errorf("Empty end time")
+	}
 	// End Time format must be XXXX-XX-XX/XX:XX
 	_, err = time.Parse(timeFormat, endTime)
 
@@ -200,8 +206,7 @@ func AddParticipatorToMeeting(title string, participatorNames []string) error {
 		return fmt.Errorf("Meeting %s doesn't exist", title)
 	}
 
-
-    for _, participatorName := range participatorNames {
+	for _, participatorName := range participatorNames {
 		participator := entity.UserModel.FindByUsername(participatorName)
 		if participator == nil {
 			return fmt.Errorf("Participator %s doesn't exist", participatorName)
@@ -242,17 +247,21 @@ func DeleteParticipatorFromMeeting(title string, participatorNames []string) err
 		return fmt.Errorf("Meeting %s doesn't exist", title)
 	}
 
-    for _, participatorName := range participatorNames {
+	for _, participatorName := range participatorNames {
 		participator := entity.UserModel.FindByUsername(participatorName)
 		if participator == nil {
 			return fmt.Errorf("Participator %s doesn't exist", participatorName)
 		}
 
 		flag := false
-		for i, curParticipator := range curMeeting.Participators {
+		for _, curParticipator := range curMeeting.Participators {
 			if curParticipator == participatorName {
-				curMeeting.Participators = append(curMeeting.Participators[:i], curMeeting.Participators[i+1:]...)
+				entity.MeetingModel.DeleteParticipatorFromMeeting(curMeeting, curParticipator)
 				flag = true
+				// check if the participator is 0
+				if len(entity.MeetingModel.FindByTitle(title).Participators) == 0 {
+					entity.MeetingModel.DeleteMeeting(curMeeting)
+				}
 				break
 			}
 		}

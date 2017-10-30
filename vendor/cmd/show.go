@@ -17,16 +17,20 @@ var showCmd = &cobra.Command{
 		endTime, _ := cmd.Flags().GetString("endTime")
 		results, err := service.FindMeetingByTime(startTime, endTime)
 		if err == nil {
+			if len(results) == 0 {
+				fmt.Printf("No meetings found")
+				return
+			}
 			for i, meeting := range results {
-				fmt.Println("No. %d", i)
-				fmt.Println("Title: %s", meeting.Title)
-				fmt.Println("Speecher: %s", meeting.Speecher)
-				fmt.Println("Participators:")
+				fmt.Printf("No. %d\n", i)
+				fmt.Printf("Title: %s\n", meeting.Title)
+				fmt.Printf("Speecher: %s\n", meeting.Speecher)
+				fmt.Printf("Participators:\n")
 				for _, participator := range meeting.Participators {
-					fmt.Println("             %s", participator)
+					fmt.Printf("             %s\n", participator)
 				}
-				fmt.Println("Start Time: %s", meeting.StartTime)
-				fmt.Println("End Time: %s", meeting.EndTime)
+				fmt.Printf("Start Time: %s\n", meeting.StartTime)
+				fmt.Printf("End Time: %s\n\n", meeting.EndTime)
 			}
 		} else {
 			fmt.Fprintln(os.Stderr, "Error:", err)
@@ -37,5 +41,5 @@ var showCmd = &cobra.Command{
 func init() {
 	RootCmd.AddCommand(showCmd)
 	showCmd.Flags().StringP("startTime", "s", "", "start time for query")
-	showCmd.Flags().StringP("endTime", "s", "", "end time for query")
+	showCmd.Flags().StringP("endTime", "e", "", "end time for query")
 }

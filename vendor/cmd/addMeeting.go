@@ -15,8 +15,6 @@ var addMeetingCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		title, _ := cmd.Flags().GetString("title")
 		participators, _ := cmd.Flags().GetStringArray("participator")
-		fmt.Println(cmd.Flags().GetStringArray("participator"))
-		fmt.Println(cmd.Flags().GetString("participator"))
 		startTime, _ := cmd.Flags().GetString("startTime")
 		endTime, _ := cmd.Flags().GetString("endTime")
 		err := service.AddMeeting(title, participators, startTime, endTime)
@@ -31,7 +29,7 @@ var addMeetingCmd = &cobra.Command{
 func init() {
 	RootCmd.AddCommand(addMeetingCmd)
 	addMeetingCmd.Flags().StringP("title", "t", "", "title of the meeting")
-	addMeetingCmd.Flags().StringArrayP("participator", "p", "", "participators of the meeting")
+	addMeetingCmd.Flags().StringArrayP("participator", "p", nil, "participators of the meeting")
 	addMeetingCmd.Flags().StringP("startTime", "s", "", "start time of the meeting")
 	addMeetingCmd.Flags().StringP("endTime", "e", "", "end time of the meeting")
 }

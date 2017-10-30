@@ -13,8 +13,7 @@ var clearCmd = &cobra.Command{
 	Short: "clear all meeting by speecher",
 	Long:  `clear all meeting by speecher`,
 	Run: func(cmd *cobra.Command, args []string) {
-		title := cmd.Flags().GetString("title")
-		err := service.DeleteAllMeeting(title)
+		err := service.DeleteAllMeeting()
 		if err == nil {
 			fmt.Println("Cleared all the meetings")
 		} else {
