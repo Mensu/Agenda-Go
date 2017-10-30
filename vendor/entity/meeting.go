@@ -88,8 +88,8 @@ func (model *meetingModel) DeleteParticipatorFromMeeting(meeting *Meeting, parti
 func (model *meetingModel) load() {
 	var meetingDb meetingDb
 	model.storage.load(&meetingDb)
-	for _, meeting := range meetingDb.Data {
-		model.meetings[meeting.Title] = &meeting
+	for index, meeting := range meetingDb.Data {
+		model.meetings[meeting.Title] = &meetingDb.Data[index]
 	}
 }
 
