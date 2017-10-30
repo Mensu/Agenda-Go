@@ -8,14 +8,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cancelCmd = &cobra.Command{
-	Use:   "cancel",
-	Short: "cancel the current account of Agenda",
-	Long:  `cancel the current account of Agenda`,
+var deleteAccountCmd = &cobra.Command{
+	Use:   "delete-account",
+	Short: "delete the current account of Agenda",
+	Long:  `delete the current account of Agenda`,
 	Run: func(cmd *cobra.Command, args []string) {
 		err := service.DeleteUser()
 		if err == nil {
-			fmt.Println("Cancelled successfully")
+			fmt.Println("Deleted Account successfully")
 		} else {
 			fmt.Fprintln(os.Stderr, "Error:", err)
 		}
@@ -23,5 +23,5 @@ var cancelCmd = &cobra.Command{
 }
 
 func init() {
-	RootCmd.AddCommand(cancelCmd)
+	RootCmd.AddCommand(deleteAccountCmd)
 }
