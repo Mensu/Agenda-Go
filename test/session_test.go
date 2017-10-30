@@ -1,6 +1,8 @@
 package entity_test
 
 import (
+	"go/build"
+	"runtime"
 	"service"
 	"testing"
 
@@ -8,7 +10,11 @@ import (
 )
 
 func init() {
-	entity.CurSessionModel.Init("/tmp/test_curUser.json")
+	if runtime.GOOS == "windows" {
+		entity.CurSessionModel.Init(build.Default.GOPATH + "\\tmp\\test_curUser.json")
+	} else {
+		entity.CurSessionModel.Init("/tmp/test_curUser.json")
+	}
 }
 
 func TestSessionModel(t *testing.T) {

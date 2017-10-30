@@ -1,6 +1,8 @@
 package entity_test
 
 import (
+	"go/build"
+	"runtime"
 	"testing"
 
 	"entity"
@@ -8,7 +10,11 @@ import (
 )
 
 func init() {
-	entity.UserModel.Init("/tmp/test_user_data.json")
+	if runtime.GOOS == "windows" {
+		entity.UserModel.Init(build.Default.GOPATH + "\\tmp\\test_user_data.json")
+	} else {
+		entity.UserModel.Init("/tmp/test_user_data.json")
+	}
 }
 
 func TestUserModel(t *testing.T) {
