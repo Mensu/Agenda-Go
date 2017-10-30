@@ -8,6 +8,10 @@
 go get github.com/mensu/Agenda-Go
 ```
 
+## 注意
+
+由于使用了 [cobra](github.com/spf13/cobra) 需要翻墙才能编译运行
+
 ## config 文件
 
 默认使用 ``$HOME/.agenda-go.yaml``
