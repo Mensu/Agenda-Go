@@ -19,9 +19,6 @@ func init() {
 
 func TestSessionModel(t *testing.T) {
 	model := entity.CurSessionModel
-	if len(model.GetCurUser()) != 0 {
-		t.Error(`Expect no current user at the beginning`)
-	}
 	model.SetCurUser(&entity.User{
 		Username: "test",
 	})
