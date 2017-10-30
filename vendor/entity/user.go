@@ -73,8 +73,8 @@ func (model *userModel) FindByUsername(username string) *User {
 func (model *userModel) load() {
 	var userDb userDb
 	model.storage.load(&userDb)
-	for _, user := range userDb.Data {
-		model.users[user.Username] = &user
+	for index, user := range userDb.Data {
+		model.users[user.Username] = &userDb.Data[index]
 	}
 }
 
