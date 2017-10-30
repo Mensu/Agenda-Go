@@ -45,6 +45,15 @@ func (model *meetingModel) AddMeeting(meeting *Meeting) {
 	logger.Println("[meetingmodel] added new meeting", meeting.Title)
 }
 
+// AddParticipatorToMeeting Add a Participator To Meeting
+func (model *meetingModel) AddParticipatorToMeeting(meeting *Meeting, participator string) {
+	logger.Println("[meetingmodel] try adding a participator to meeting", meeting.Title)
+	curMeetingParticipators := model.meetings[meeting.Title].Participators
+	model.meetings[meeting.Title].Participators = append(curMeetingParticipators, participator)
+	model.dump()
+	logger.Println("[meetingmodel] added a participator to meeting", meeting.Title)
+}
+
 // FindMeetingCondition filter function to query meeting
 type FindMeetingCondition func(*Meeting) bool
 
