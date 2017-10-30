@@ -17,6 +17,7 @@ func Login(username string, password string) error {
 		return fmt.Errorf("you have already logged in as '%s'. Please logout first", curUsername)
 	}
 	user := entity.UserModel.FindByUsername(username)
+	fmt.Println(user)
 	if user == nil || IsPwdMatch(user, password) == false {
 		return ErrInvalidCredentials
 	}
