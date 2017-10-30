@@ -17,12 +17,15 @@ func validateNewMeeting(meeting *meeting) error {
 	if entity.MeetingModel.FindByTitle(meeting.Title) != nil {
 		return fmt.Errorf("Title '%s' already exists", meeting.Title)
 	}
-	if len(meeting.Speecher) == 0 {
-		return fmt.Errorf("You are not login")
+	if meeting.Participators.size() == 0 {
+		return fmt.Errorf("Meeting must have participator")
 	}
 	for _, participatorName := range meeting.Participators {
 		if entity.UserModel.FindByUsername(participatorName) == nil {
 			return fmt.Errorf("Participator %s is not existed", participatorName)
+		}
+		if participatorName == meeting.Speecher {
+			return fmt.Errorf("You can't be the participator")
 		}
 	}
 
@@ -100,7 +103,7 @@ func validateNewMeetingTime(newMeeting *meeting) (bool, error) {
 func validateFreeTime(startTime string, endTime string, meetings []meeting) (bool, error) {
 	for _, oldMeeting := range meetings {
 		if endTime > oldMeeting.StartTime && oldMeeting.EndTime > startTime {
-			return false, fmt.Errorf("Conflited with the meeting %s", oldMeeting.Title)
+			return false, fmt.Errorf("Time conflited with the meeting %s", oldMeeting.Title)
 		}
 	}
 	return true, nil
@@ -108,6 +111,7 @@ func validateFreeTime(startTime string, endTime string, meetings []meeting) (boo
 
 // AddMeeting add a meeting
 func AddMeeting(title string, participatorName []string, startTime string, endTime string) (err error) {
+	// Login first
 	if err := checkIfLoggedin(); err != nil {
 		return err
 	}
@@ -119,6 +123,7 @@ func AddMeeting(title string, participatorName []string, startTime string, endTi
 		StartTime:     startTime,
 		EndTime:       endTime,
 	}
+	// validate if format is ok
 	err = validateNewMeeting(newMeeting)
 	if err != nil {
 		return
@@ -185,7 +190,7 @@ func DeleteFromMeeting(title string) error {
 }
 
 // AddParticipatorToMeeting add participator to a meeting
-func AddParticipatorToMeeting(title string, participatorName string) error {
+func AddParticipatorToMeeting(title string, participatorNames []string) error {
 	if err := checkIfLoggedin(); err != nil {
 		return err
 	}
@@ -195,37 +200,40 @@ func AddParticipatorToMeeting(title string, participatorName string) error {
 		return fmt.Errorf("Meeting %s doesn't exist", title)
 	}
 
-	participator := entity.UserModel.FindByUsername(participatorName)
-	if participator == nil {
-		return fmt.Errorf("Participator %s doesn't exist", participatorName)
-	}
 
-	results := entity.MeetingModel.FindBy(func(m *meeting) bool {
-		// check from speecher field
-		if m.Speecher == participatorName {
-			return true
+    for _, participatorName := range participatorNames {
+		participator := entity.UserModel.FindByUsername(participatorName)
+		if participator == nil {
+			return fmt.Errorf("Participator %s doesn't exist", participatorName)
 		}
-		// check from participator field
-		for _, participator := range m.Participators {
-			if participator == participatorName {
+
+		results := entity.MeetingModel.FindBy(func(m *meeting) bool {
+			// check from speecher field
+			if m.Speecher == participatorName {
 				return true
 			}
+			// check from participator field
+			for _, participator := range m.Participators {
+				if participator == participatorName {
+					return true
+				}
+			}
+			return false
+		})
+
+		_, err := validateFreeTime(curMeeting.StartTime, curMeeting.EndTime, results)
+		if err != nil {
+			return err
 		}
-		return false
-	})
 
-	_, err := validateFreeTime(curMeeting.StartTime, curMeeting.EndTime, results)
-	if err != nil {
-		return err
+		curMeeting.Participators = append(curMeeting.Participators, participatorName)
 	}
-
-	curMeeting.Participators = append(curMeeting.Participators, participatorName)
 
 	return nil
 }
 
 // DeleteParticipatorFromMeeting delete a participator from the meeting
-func DeleteParticipatorFromMeeting(title string, participatorName string) error {
+func DeleteParticipatorFromMeeting(title string, participatorNames []string) error {
 	if err := checkIfLoggedin(); err != nil {
 		return err
 	}
@@ -234,16 +242,23 @@ func DeleteParticipatorFromMeeting(title string, participatorName string) error 
 		return fmt.Errorf("Meeting %s doesn't exist", title)
 	}
 
-	participator := entity.UserModel.FindByUsername(participatorName)
-	if participator == nil {
-		return fmt.Errorf("Participator %s doesn't exist", participatorName)
-	}
+    for _, participatorName := range participatorNames {
+		participator := entity.UserModel.FindByUsername(participatorName)
+		if participator == nil {
+			return fmt.Errorf("Participator %s doesn't exist", participatorName)
+		}
 
-	for i, curParticipator := range curMeeting.Participators {
-		if curParticipator == participatorName {
-			curMeeting.Participators = append(curMeeting.Participators[:i], curMeeting.Participators[i+1:]...)
-			return nil
+		flag := false
+		for i, curParticipator := range curMeeting.Participators {
+			if curParticipator == participatorName {
+				curMeeting.Participators = append(curMeeting.Participators[:i], curMeeting.Participators[i+1:]...)
+				flag = true
+				break
+			}
+		}
+		if !flag {
+			return fmt.Errorf("Participator %s is not in the meeting %s", participatorName, title)
 		}
 	}
-	return fmt.Errorf("Participator %s is not in the meeting %s", participatorName, title)
+	return nil
 }
