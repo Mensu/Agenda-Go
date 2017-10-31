@@ -57,7 +57,7 @@ curUser: data/curUser.json
 
 ### 团队协作
 
-- 杨奕嘉从陈宇翔的 ``master`` 分支 fork 出新的仓库，在[他的仓库](https://github.com/pfjhyyj/Agenda-Go)上进行需求开发
+- 杨奕嘉从陈宇翔的 ``master`` 分支 fork 出[新的仓库](https://github.com/pfjhyyj/Agenda-Go)进行需求开发
 - 杨奕嘉开发完毕，向陈宇翔的 ``master`` 分支发起 ``Pull Request``，并邀请陈宇翔 ``review``
 - 陈宇翔 ``review`` 完觉得可以，且 ``CI`` 通过，方可确认归并代码
 - 陈宇翔作为 master 开发时，不得直接向 ``master`` 分支 push commit。而应该同样通过另开分支的方式进行需求开发。开发完毕后，向陈宇翔的 ``master`` 分支发起 ``Pull Request``，并邀请杨奕嘉 ``review``。同样，杨奕嘉 ``review`` 完觉得可以，且 ``CI`` 通过，方可确认归并代码
@@ -66,7 +66,7 @@ curUser: data/curUser.json
 ### 持续集成
 
 - 使用 [``Travis CI``](https://travis-ci.org/Mensu/Agenda-Go)，通过执行 go test 命令运行编写好的测试文件进行持续集成
-- 从最开始的开发开始，边开发边写对应的测试，在一次次提交的过程中不断集成，减少新的改动破坏原有功能的可能性，为项目功能的稳定提供有力保障
+- 从最开始的开发开始，**边开发边写对应的测试**，在一次次提交的过程中不断集成，减少新的改动破坏原有功能的可能性，为项目功能的稳定提供有力保障
 
 ### TODO
 
