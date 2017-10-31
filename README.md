@@ -8,7 +8,7 @@
 
 ```
 go get github.com/mensu/Agenda-Go
-$GOPATH/bin/Agenda-Go help
+$GOPATH/bin/Agenda-Go
 ```
 
 ## 注意
@@ -29,6 +29,10 @@ cwd: .
 log: /dev/null
 # 用户数据的路径。JSON 格式
 user_data: data/user_data.json
+# 会议数据的路径。JSON 格式
+meeting_data: data/meeting_data.json
+# 会话数据的路径。JSON 格式
+curUser: data/curUser.json
 
 ```
 
@@ -45,7 +49,9 @@ user_data: data/user_data.json
   + README 工程师
 - 杨奕嘉 15331366
   + 命令设计
-  + 需求：用户查询、删除，关于会议的全部需求
+  + 需求：用户查询、删除
+  + 需求：会议创建、增删参与者、查询
+  + 需求：会议取消、退出、清空
   + 会议实体、服务、UI
   + 用户和会议相关的测试代码
 
@@ -53,8 +59,8 @@ user_data: data/user_data.json
 
 - 杨奕嘉从陈宇翔的 ``master`` 分支 fork 出新的仓库，在[他的仓库](https://github.com/pfjhyyj/Agenda-Go)上进行需求开发
 - 杨奕嘉开发完毕，向陈宇翔的 ``master`` 分支发起 ``Pull Request``，并邀请陈宇翔 ``review``
-- 陈宇翔 ``review`` 完觉得可以，且 ``CI`` 通过，方可确认合并代码
-- 陈宇翔作为 master 开发时，不得直接向 ``master`` 分支 push commit。而应该同样通过另开分支的方式进行需求开发。开发完毕后，向陈宇翔的 ``master`` 分支发起 ``Pull Request``，并邀请杨奕嘉 ``review``。同样，杨奕嘉 ``review`` 完觉得可以，且 ``CI`` 通过，方可由 master 确认合并代码
+- 陈宇翔 ``review`` 完觉得可以，且 ``CI`` 通过，方可确认归并代码
+- 陈宇翔作为 master 开发时，不得直接向 ``master`` 分支 push commit。而应该同样通过另开分支的方式进行需求开发。开发完毕后，向陈宇翔的 ``master`` 分支发起 ``Pull Request``，并邀请杨奕嘉 ``review``。同样，杨奕嘉 ``review`` 完觉得可以，且 ``CI`` 通过，方可确认归并代码
 - 以上限制通过设置 Github 完成，无需由团队成员假装限制
 
 ### 持续集成
@@ -138,5 +144,5 @@ user_data: data/user_data.json
 
 ### 登录控制
 
-- 使用 ``session`` 表示会话，控制登录状态。实体化于 ``curUser.json`` 文件中
+- 使用 ``session`` 表示会话，控制登录状态。持久化于 ``curUser.json`` 文件中
 - 目前会话不过期，除非用户手动登出。以后可以考虑像浏览器的会话控制一样，增加会话过期时间

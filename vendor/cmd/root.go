@@ -32,7 +32,7 @@ var (
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Use:   "agenda",
+	Use:   "Agenda-Go",
 	Short: "Agenda implemented in golang",
 	Long:  `Agenda implemented in golang`,
 	// Uncomment the following line if your bare application
